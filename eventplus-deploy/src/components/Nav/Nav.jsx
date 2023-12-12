@@ -29,16 +29,22 @@ const Nav = ({ exibeNavbar, setExibeNavbar }) => {
       </Link>
 
       <div className="navbar__items-box">
-        <Link to="/" className="navbar__item">
+        <Link to="/" className="navbar__item" onClick={() => {
+          setExibeNavbar(false);
+        }}>
           Home
         </Link>
 
         {userData.nome && userData.role === "Administrador" ? (
           <>
-            <Link className="navbar__item" to="/tipo-eventos">
+            <Link className="navbar__item" to="/tipo-eventos" onClick={() => {
+          setExibeNavbar(false);
+        }}>
               Tipos Evento
             </Link>
-            <Link className="navbar__item" to="/eventos">
+            <Link className="navbar__item" to="/eventos" onClick={() => {
+          setExibeNavbar(false);
+        }}>
               Eventos
             </Link>
           </>
