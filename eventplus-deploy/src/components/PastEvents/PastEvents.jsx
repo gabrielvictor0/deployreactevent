@@ -1,11 +1,14 @@
 import React from "react";
 import "./PastEvents";
 import { Tooltip } from "react-tooltip";
+import { dateFormatDbToView } from "../../Utils/stringFunctions";
+import EventosAnterioresAlunoPage from "../../pages/EventosAnterioresAlunoPage/EventosAnterioresAlunoPage";
+import { Link, Route } from "react-router-dom";
 
-const PastEvents = ({ title, description, eventDate, idEvent }) => {
+const PastEvents = ({ title, description, eventDate, idEvent, buttonLink, buttonText }) => {
   return (
     <article className="event-card">
-      <h2 className="event-card__titlte">{title}</h2>
+      <h2 className="event-card__title">{title}</h2>
 
       <p
         className="event-card__description"
@@ -18,12 +21,10 @@ const PastEvents = ({ title, description, eventDate, idEvent }) => {
       </p>
 
         <p className="event-card__description">
-        {dateFormatDbToView(eventDate)}
+        {dateFormatDbToView(eventDate)} 
         </p>
 
-        <a className="event-card__connect-link">
-            Visualizar
-        </a>
+        <Link to={buttonLink} className="event-card__connect-link">{buttonText}</Link>
     </article>
   );
 };

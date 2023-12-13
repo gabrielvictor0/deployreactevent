@@ -8,11 +8,10 @@ import ContactSection from "../../components/ContactSection/ContactSection";
 import Title from "../../components/Title/Title";
 import NextEvent from "../../components/NextEvent/NextEvent";
 import Container from "../../components/Container/Container";
-import api from "../../Services/Service";
+import api, { pastEventsResource } from "../../Services/Service";
 import Notification from "../../components/Notification/Notification";
 import { nextEventResource } from "../../Services/Service";
 import PastEvents from "../../components/PastEvents/PastEvents";
-
 
 const HomePage = () => {
   const [nextEvents, setNextEvents] = useState([]);
@@ -28,7 +27,6 @@ const HomePage = () => {
         const dados = await promise.data;
         // console.log(dados);
         setNextEvents(dados); //atualiza o state
-
       } catch (error) {
         console.log("não trouxe os próximos eventos, verifique lá!");
         // setNotifyUser({
@@ -42,11 +40,21 @@ const HomePage = () => {
       }
     }
 
+    async function getPastEvents() {
+      try {
+        const promise = await api.get(pastEventsResource);
+        const dados = await promise.data;
+        setPastEvents(dados);
+      } catch (error) {
+        console.log("Deu erro na api");
+      }
+    }
+
+    getPastEvents();
     getNextEvents(); //chama a função
   }, []);
 
   return (
-    
     <MainContent>
       {<Notification {...notifyUser} setNotifyUser={setNotifyUser} />}
       <Banner />
@@ -68,6 +76,14 @@ const HomePage = () => {
                 />
               );
             })}
+          </div>
+        </Container>
+      </section>
+
+      <section className="proximos-eventos">
+        <Container>
+          <Title titleText={"Eventos Anteriores"} />
+          <div className="events-box">
             {pastEvents.map((e) => {
               return (
                 <PastEvents
@@ -76,10 +92,11 @@ const HomePage = () => {
                   description={e.descricao}
                   eventDate={e.dataEvento}
                   idEvent={e.idEvento}
+                  buttonLink={"/detalhes-evento"}
+                  buttonText={"Visualizar"}
                 />
               );
             })}
-
           </div>
         </Container>
       </section>
