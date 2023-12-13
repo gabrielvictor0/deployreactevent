@@ -40,6 +40,8 @@ export const institutionResource = '/Instituicao';
  */
 export const loginResource = '/Login';
 
+export const pastEventsResource = "/Evento/ListarAnteriores"
+
 // const apiPort = '5000';
 // const localApiUri = `http://localhost:${apiPort}/api`;
 const externallApiUri = `https://eventwebapi-gabrielvictor.azurewebsites.net/api`;
