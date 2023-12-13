@@ -49,15 +49,6 @@ const Rotas = () => {
           }
         />
 
-        <Route
-          path="/eventos-anteriores-aluno"
-          element={
-            <PrivateRoute redirectTo="/">
-              <EventosAnterioresAlunosPage/>
-            </PrivateRoute>
-          }
-        />
-
         <Route element={<LoginPage />} path="/login" />
         <Route element={<TestePage />} path="/testes" />
       </Routes>

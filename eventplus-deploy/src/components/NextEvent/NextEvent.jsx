@@ -5,6 +5,7 @@ import { Tooltip } from "react-tooltip";
 
 // importar a função lá do arquivo stringFunction (destructuring)
 import { dateFormatDbToView } from "../../Utils/stringFunctions";
+import Title from "../Title/Title";
 
 const NextEvent = ({ title, description, eventDate, idEvent }) => {
   function conectar(idEvent) {
@@ -13,7 +14,7 @@ const NextEvent = ({ title, description, eventDate, idEvent }) => {
   }
   return (
     <article className="event-card">
-      <h2 className="event-card__title">{title}</h2>
+      <h2 className="event-card__title">{title="Proximos Eventos"}</h2>
 
       <p
         className="event-card__description"

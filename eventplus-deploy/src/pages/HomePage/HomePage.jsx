@@ -11,10 +11,13 @@ import Container from "../../components/Container/Container";
 import api from "../../Services/Service";
 import Notification from "../../components/Notification/Notification";
 import { nextEventResource } from "../../Services/Service";
+import PastEvents from "../../components/PastEvents/PastEvents";
 
 
 const HomePage = () => {
   const [nextEvents, setNextEvents] = useState([]);
+  const [pastEvents, setPastEvents] = useState([]);
+
   const [notifyUser, setNotifyUser] = useState(); //Componente Notification
 
   // roda somente na inicialização do componente
@@ -65,6 +68,18 @@ const HomePage = () => {
                 />
               );
             })}
+            {pastEvents.map((e) => {
+              return (
+                <PastEvents
+                  key={e.idEvento}
+                  title={e.nomeEvento}
+                  description={e.descricao}
+                  eventDate={e.dataEvento}
+                  idEvent={e.idEvento}
+                />
+              );
+            })}
+
           </div>
         </Container>
       </section>
