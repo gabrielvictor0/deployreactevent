@@ -14,7 +14,8 @@ const NextEvent = ({ title, description, eventDate, idEvent }) => {
   }
   return (
     <article className="event-card">
-      <h2 className="event-card__title">{title="Proximos Eventos"}</h2>
+      <Title titleText={"Proximos Eventos"}/>
+      <h2 className="event-card__title">{title}</h2>
 
       <p
         className="event-card__description"
