@@ -10,7 +10,7 @@ const EventosAnterioresAlunoPage = () => {
     <>
       <MainContent>
         <Container>
-            <Title titleText={"Detalhes Evento"} additionalClass={"custom-title"} />
+            <Title titleText={"Eventos Anteriores"} additionalClass="custom-title"/>
 
         </Container>
       </MainContent>
