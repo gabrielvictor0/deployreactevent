@@ -217,7 +217,7 @@ const EventosAlunoPage = () => {
 
         if (promise.status === 201) {
           loadEventsType();
-          alert("Presença confirmada, parabéns");
+       
         }
       } catch (error) {}
       return;
@@ -230,7 +230,7 @@ const EventosAlunoPage = () => {
       );
       if (unconnected.status === 204) {
         loadEventsType();
-        alert("Desconectado do evento");
+        
       }
     } catch (error) {
       console.log("Erro ao desconecar o usuário do evento");

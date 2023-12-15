@@ -4,21 +4,56 @@ import MainContent from "../../components/MainContent/MainContent";
 import Container from "../../components/Container/Container";
 import Title from "../../components/Title/Title";
 import { useParams } from "react-router-dom";
-import api, {eventsResource} from "../../Services/Service";
+import api, {
+  commentaryListOnly,
+  eventsResource,
+  eventsTypeResource,
+} from "../../Services/Service";
 
 const EventosAnterioresAlunoPage = (e) => {
-  
-    const [evento, setEvento] = useState([])
-    const { idEvento } = useParams();
+  //obtendo o idEvento da rota
+  const { idEvento } = useParams();
+
+  //states para guardar as informacoes do evento
+  const [evento, setEvento] = useState({});
+  const [tipoEvento, setTipoEvento] = useState({});
+  const [comentarioEvento, setComentarioEvento] = useState([]);
+  //chamando as funcoes no useEffect para obter os dados na renderizacao da pagina
 
   useEffect(() => {
     getEventById();
-  }, [])
+    getEventType();
+    getCommentaryByIdEvent();
+  }, []);
 
+  //trazendo as propriedades do evento pelo idEvento obtido pela rota com useParams
   async function getEventById() {
-    const promise = await api.get(`${eventsResource}/${idEvento}`);
-    setEvento(promise.data);
-    console.log(promise.data);
+    try {
+      const promise = await api.get(`${eventsResource}/${idEvento}`);
+      setEvento(promise.data);
+      console.log(promise.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function getCommentaryByIdEvent() {
+    
+      const promise = await api.get(`${commentaryListOnly}?id=${idEvento}`);
+      setComentarioEvento(promise.data);
+      console.log(promise.data);
+    
+  }
+
+  async function getEventType() {
+    
+      const promiseType = await api.get(
+        `${eventsTypeResource}/${evento.idTipoEvento}`
+      );
+      console.log("aquiiiiiiiiiiiiiii");
+      console.log(promiseType.data);
+      setTipoEvento(promiseType.data);
+   
   }
 
   return (
@@ -31,8 +66,9 @@ const EventosAnterioresAlunoPage = (e) => {
             color=""
           />
           <div>
-          <p>{evento.nomeEvento}</p>
-
+            <p>{evento.nomeEvento}</p>
+            <p>{tipoEvento.titulo}</p>
+            <p>{comentarioEvento.descricao}</p>
           </div>
         </Container>
       </MainContent>

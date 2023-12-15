@@ -44,6 +44,8 @@ export const pastEventsResource = "/Evento/ListarAnteriores"
 
 export const commentaryEventResourceIA = '/ComentariosEvento/ComentarioIA';
 
+export const commentaryListOnly = `/ComentariosEvento/ListarSomenteExibe`
+
 // const apiPort = '5000';
 // const localApiUri = `http://localhost:${apiPort}/api`;
 const externallApiUri = `https://eventwebapi-gabrielvictor.azurewebsites.net/api`;
