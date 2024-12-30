@@ -140,11 +140,8 @@ const EventosAlunoPage = () => {
     setShowModal(showModal ? false : true);
     // setUserData({ ...userData, idEvento: idEvent });
     setIdEvento(idEvent);
-    // console.log("após guardar no state do usuário");
-    // console.log(idEvent);
   };
 
-  // ler um comentário - get
   const loadMyCommentary = async (idUsuario, idEvento) => {
     // console.log("fui chamado");
 
@@ -157,10 +154,6 @@ const EventosAlunoPage = () => {
       const myComm = await promise.data.filter(
         (comm) => comm.idEvento === idEvento && comm.idUsuario === idUsuario
       );
-
-      // console.log("QUANTIDADE DE DADOS NO ARRAY FILTER");
-      // console.log(myComm.length);
-      // console.log(myComm);
 
       setComentario(myComm.length > 0 ? myComm[0].descricao : "");
       setIdComentario(myComm.length > 0 ? myComm[0].idComentarioEvento : null);

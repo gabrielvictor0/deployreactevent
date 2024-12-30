@@ -1,6 +1,6 @@
-import React, {useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import trashDelete from "../../assets/images/trash-delete-red.png";
-
+import { FaTrash } from "react-icons/fa";
 import { Button, Input } from "../FormComponents/FormComponents";
 import "./Modal.css";
 
@@ -40,15 +40,22 @@ const Modal = ({
 
         <div className="comentary">
           <h4 className="comentary__title">Comentário</h4>
-          <img
+          {/* <img
             src={trashDelete}
             className="comentary__icon-delete"
             alt="Ícone de uma lixeira"
             onClick={async () => {
+
+            }}
+          /> */}
+
+          <FaTrash
+            color="#B51D44"
+            className="comentary__icon-delete"
+            onClick={async () => {
               await fnDelete(idComentario);
               await carregarDados();
-            }}
-          />
+            }} />
 
           <p className="comentary__text">{comentaryText}</p>
 
@@ -64,19 +71,19 @@ const Modal = ({
           }}
         />
         {/* {comentarioDesc} */}
-        
+
         <Button
           textButton="Comentar"
           additionalClass="comentary__button"
           manipulationFunction={async () => {
             if (idComentario !== null) {
-                alert("Já existe um comentàrio cadastrado para o evento.");
-              } else {
-                
-                await fnPost(comentarioDesc.trim(), userId, idEvento);
-                await carregarDados();
-              }
-              setComentarioDesc("");//;limpa o campo do input
+              alert("Já existe um comentàrio cadastrado para o evento.");
+            } else {
+
+              await fnPost(comentarioDesc.trim(), userId, idEvento);
+              await carregarDados();
+            }
+            setComentarioDesc("");//;limpa o campo do input
           }}
         />
       </article>

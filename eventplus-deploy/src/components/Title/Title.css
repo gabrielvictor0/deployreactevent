@@ -9,8 +9,13 @@
     font-size: 1.1rem;
     text-transform: uppercase;
     text-align: center;
-    align-self: flex-start; /* alinhamento isolado */
+    align-self: flex-start;
+    /* alinhamento isolado */
     /* border: 1px solid red; */
+}   
+
+.title-past-event {
+    margin: 30px 0px 0px 0px;
 }
 
 .title__underscore {

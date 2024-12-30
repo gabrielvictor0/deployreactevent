@@ -18,6 +18,9 @@ export const myEventsResource = '/PresencasEvento/ListarMinhas';
  * Rota para o recurso Presenças Evento
  */
 export const presencesEventResource = '/PresencasEvento';
+
+export const presencesEventGetById = '/PresencasEvento/BuscarPorId'
+
 /**
  * Rota para o recurso Presenças Evento
  */

@@ -35,7 +35,7 @@
 
 @media screen and (min-width: 992px) {
     .button-component--middle {
-        width: 45%;
+        width: 100%;
     }
 
     

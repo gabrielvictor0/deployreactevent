@@ -8,7 +8,7 @@
     src: url(../../assets/fonts/Poppins/Poppins-Thin.ttf);
   }
   
-  .vision {
+  .vision {    
     margin-top: 50px;
     width: 100%;
     height: 742px;
@@ -22,6 +22,10 @@
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
   
   .vision__title {

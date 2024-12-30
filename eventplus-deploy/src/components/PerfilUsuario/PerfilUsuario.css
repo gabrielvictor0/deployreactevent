@@ -9,7 +9,7 @@
 }
 
 .perfil-usuario {
-    width: 120px;
+    width: min-content;
     /* height: 40px; */
     display: flex;
     justify-content: space-between;
@@ -24,11 +24,13 @@
     font-size: .8rem;
     color: #201849;
     text-decoration: none;
+
+    margin: 0px 10px 0px 0px;
 }
 
 .perfil-usuario__icon {
     width: 20px;
-    margin-top: 5px;
+    
     cursor: pointer;
 }
 /* 201849 */

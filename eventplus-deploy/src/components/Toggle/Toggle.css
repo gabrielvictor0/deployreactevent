@@ -12,6 +12,8 @@
     
     /* transform: scale(1.1); */
     transition: 1.2s;
+
+    z-index: -999;
 }
 
 .toggle__switch {

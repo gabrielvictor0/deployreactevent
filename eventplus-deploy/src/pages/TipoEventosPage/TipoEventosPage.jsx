@@ -10,9 +10,10 @@ import { Input, Button } from "../../components/FormComponents/FormComponents";
 import api, { eventsTypeResource } from "../../Services/Service";
 import Notification from "../../components/Notification/Notification";
 import Spinner from "../../components/Spinner/Spinner";
+import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationModal";
 
 const TipoEventosPage = () => {
-  
+
   // states
   const [frmEdit, setFrmEdit] = useState(false); //está em modo edição?
   const [titulo, setTitulo] = useState("");
@@ -21,12 +22,14 @@ const TipoEventosPage = () => {
   const [notifyUser, setNotifyUser] = useState(); //Componente Notification
   const [showSpinner, setShowSpinner] = useState(false); //Spinner Loading
 
-  // Função que após a página/DOM estar pronta
+  const [showModal, setShowModal] = useState(false)
+  const [idToBeDeleted, setIdToBeDeleted] = useState(null)
+
   useEffect(() => {
     // define a chamada em nossa api
     async function loadEventsType() {
       setShowSpinner(true);
-      
+
       try {
         const retorno = await api.get(eventsTypeResource);
         setTipoEventos(retorno.data);
@@ -38,13 +41,12 @@ const TipoEventosPage = () => {
 
       setShowSpinner(false);
     }
-    // chama a função/api no carregamento da página/componente
+
     loadEventsType();
   }, []);
 
-  // ***************************** CADASTRAR *****************************
   async function handleSubmit(e) {
-    e.preventDefault(); //evita o submit do formulário
+    e.preventDefault();
     setShowSpinner(true);
 
     if (titulo.trim().length < 3) {
@@ -102,7 +104,7 @@ const TipoEventosPage = () => {
       const retorno = await api.get(`${eventsTypeResource}/${idElement}`);
       setTitulo(retorno.data.titulo);
       console.log(retorno.data);
-    } catch (error) {}
+    } catch (error) { }
     setShowSpinner(false);
   }
   // cancela a tela/ação de edição (volta para o form de cadastro)
@@ -118,11 +120,11 @@ const TipoEventosPage = () => {
 
     try {
       // atualiar na api
-     
-      const retorno = await api.put(eventsTypeResource + "/" + idEvento,{
-        titulo : titulo
+
+      const retorno = await api.put(eventsTypeResource + "/" + idEvento, {
+        titulo: titulo
       }); //o id está no state
-      
+
 
       if (retorno.status === 204) {
         setNotifyUser({
@@ -156,44 +158,37 @@ const TipoEventosPage = () => {
     setShowSpinner(false);
   }
 
-  /********************* APAGAR DADOS *********************/
-  // apaga o tipo de evento na api
   async function handleDelete(idElement) {
-    // se confirmar a exclusão, cancela a ação
-    if (window.confirm("Confirma a exclusão?")) {
-      setShowSpinner(true);
-      try {
-        const promise = await api.delete(`${eventsTypeResource}/${idElement}`);
+    setShowSpinner(true);
+    try {
+      const promise = await api.delete(`${eventsTypeResource}/${idElement}`);
 
-        if (promise.status === 204) {
-          setNotifyUser({
-            titleNote: "Sucesso",
-            textNote: `Cadastro apagado com sucesso!`,
-            imgIcon: "success",
-            imgAlt:
-              "Imagem de ilustração de sucesso. Moça segurando um balão com símbolo de confirmação ok.",
-            showMessage: true,
-          });
+      if (promise.status === 204) {
+        setNotifyUser({
+          titleNote: "Sucesso",
+          textNote: `Cadastro apagado com sucesso!`,
+          imgIcon: "success",
+          imgAlt:
+            "Imagem de ilustração de sucesso. Moça segurando um balão com símbolo de confirmação ok.",
+          showMessage: true,
+        });
 
-          // DESAFIO: fazer uma função para retirar o registro apagado do array tipoEventos
-          const buscaEventos = await api.get(eventsTypeResource);
-          setTipoEventos(buscaEventos.data); //aqui retorna um array, então de boa!
-        }
-      } catch (error) {
-        alert("Problemas ao apagar o elemento!");
+        const buscaEventos = await api.get(eventsTypeResource);
+        setTipoEventos(buscaEventos.data);
       }
-      setShowSpinner(false);
+    } catch (error) {
+      alert("Problemas ao apagar o elemento!");
     }
+    setShowSpinner(false);
+
   }
   return (
     <>
       {<Notification {...notifyUser} setNotifyUser={setNotifyUser} />}
-      
-      {/* SPINNER - Feito com position */}
+
       {showSpinner ? <Spinner /> : null}
-      
+
       <MainContent>
-        {/* formulário de cadastro do tipo do evento */}
         <section className="cadastro-evento-section">
           <Container>
             <div className="cadastro-evento__box">
@@ -274,10 +269,25 @@ const TipoEventosPage = () => {
               dados={tipoEventos}
               fnUpdate={showUpdateForm}
               fnDelete={handleDelete}
+              setIdToBeDeleted={setIdToBeDeleted}
+              setShowModal={setShowModal}
             />
           </Container>
         </section>
       </MainContent>
+
+      {
+        showModal
+          ?
+          (<ConfirmationModal
+            page={"adm-type-event"}
+            txt={"Deseja confirmar a exclusão do tipo de evento? todos os eventos com este tipo também serão excluídos"}
+            idToBeDeleted={idToBeDeleted}
+            setShowModal={setShowModal}
+            fnDelete={handleDelete}
+          />)
+          : null
+      }
     </>
   );
 };

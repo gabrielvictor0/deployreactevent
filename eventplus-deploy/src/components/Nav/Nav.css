@@ -25,6 +25,8 @@
     opacity: 0;
     background-color: #B51D44;
     transition: left .4s, opacity .5s;
+
+    z-index: 999;
 }
 
 .navbar__close {
@@ -82,18 +84,18 @@
 @media screen and (min-width: 992px) {
     .navbar {
         position: static;
-        width: 80%;
+        width: 55%;
         height: 85px;
         padding: 0;
 
-        display: flex;
+        display: none;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
         opacity: 1;
 
         background-color: transparent;
-        /* border: 2px solid red; */
+        border: 2px solid red;
     }
 
     .eventlogo {
@@ -110,7 +112,7 @@
 
     .navbar__items-box {
         height: auto;
-        width: 60%;
+        width: min-content;
         flex-direction: row;
         gap: 20px;
         /* justify-content: space-between; */
@@ -123,5 +125,7 @@
         font-size: 0.875rem;
         color: var(--color-dark-blue);
         border: none;
+
+        white-space: nowrap;
     }
 }

@@ -38,22 +38,31 @@ const EventosAnterioresAlunoPage = (e) => {
   }
 
   async function getCommentaryByIdEvent() {
-    
+
+    try {
       const promise = await api.get(`${commentaryListOnly}?id=${idEvento}`);
       setComentarioEvento(promise.data);
       console.log(promise.data);
-    
+    } catch (error) {
+
+    }
+
+
   }
 
   async function getEventType() {
-    
+
+    try {
       const promiseType = await api.get(
         `${eventsTypeResource}/${evento.idTipoEvento}`
       );
       console.log("aquiiiiiiiiiiiiiii");
       console.log(promiseType.data);
       setTipoEvento(promiseType.data);
-   
+
+    } catch (error) {
+
+    }
   }
 
   return (

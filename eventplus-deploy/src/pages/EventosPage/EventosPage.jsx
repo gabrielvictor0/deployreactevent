@@ -19,27 +19,27 @@ import Notification from "../../components/Notification/Notification";
 import { truncateDateFromDb } from "../../Utils/stringFunctions";
 import eventoImage from "../../assets/images/tipo-evento.svg";
 import "./EventosPage.css";
+import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationModal";
 
 export default function EventosPaage(props) {
   //dados do form
-  const [nomeEvento, setNomeEvento] = useState(""); //Nome do evento
-  const [descricaoEvento, setDescricaoEvento] = useState(""); //Descrição do Evento
-  const [tipoEvento, setTipoEvento] = useState(""); //código do tipo do Evento escolhido
-  const [dataEvento, setDFataEvento] = useState(""); //Tipo do Evento escolhido ???
+  const [nomeEvento, setNomeEvento] = useState("");
+  const [descricaoEvento, setDescricaoEvento] = useState("");
+  const [tipoEvento, setTipoEvento] = useState("");
+  const [dataEvento, setDFataEvento] = useState("");
   const [eventos, setEventos] = useState([]);
   const [tiposEvento, setTiposEvento] = useState([]);
   const [instituicao, setInstituicao] = useState();
-  const [frmEditData, setFrmEditData] = useState({}); //dados do formulário de edição de dados
+  const [frmEditData, setFrmEditData] = useState({});
 
-  //states condicionais
   const [showSpinner, setShowSpinner] = useState(false);
-  //controla qual é a ação do submit, cadastrar ou atualizar
+
   const [frmEdit, setFrmEdit] = useState(false);
-  const [notifyUser, setNotifyUser] = useState({}); //Componente Notification
+  const [notifyUser, setNotifyUser] = useState({});
 
-  //THE FUNCTIONS
+  const [showModal, setShowModal] = useState(false)
+  const [idToBeDeleted, setIdToBeDeleted] = useState(null)
 
-  // READ - LIFE CICLE - Carrega os tipos de evento no carregamento do componente
   useEffect(() => {
     async function loadEventsType() {
       setShowSpinner(true);
@@ -48,11 +48,11 @@ export default function EventosPaage(props) {
         const promise = await api.get(eventsResource);
         const promiseTipoEventos = await api.get(eventsTypeResource);
         const promiseInstituicao = await api.get(institutionResource);
-        //só tem uma instituição neste projeto mas já fica preparado pra adicionar mais!
+
         setEventos(promise.data);
 
         const tpEventosModificado = [];
-        //retorno da api (array tipo de eventos)
+
         promiseTipoEventos.data.forEach((event) => {
           tpEventosModificado.push({ value: event.idTipoEvento, text: event.titulo });
         });
@@ -60,26 +60,25 @@ export default function EventosPaage(props) {
         setTiposEvento(tpEventosModificado);
         setInstituicao(promiseInstituicao.data[0].idInstituicao);
         console.log(promiseTipoEventos.data);
-        // console.log(promiseInstituicao.data[0].idInstituicao);
-      } catch (error) {}
+
+      } catch (error) { }
       setShowSpinner(false);
     }
 
     loadEventsType();
-  }, [frmEdit]); //frmEdit[instituicao ]
+  }, [frmEdit]);
 
   // UPDATE
   function editActionAbort() {
     setFrmEdit(false);
     setFrmEditData({});
   }
-  // Exibe os dados na tela com o formulário de edição
+
   async function showUpdateForm(evento) {
     setFrmEditData(evento);
     setFrmEdit(true);
   }
 
-  // UPDATE ON API MONSTER BACKEND
   async function handleUpdate(e) {
     e.preventDefault();
     setShowSpinner(true);
@@ -107,7 +106,7 @@ export default function EventosPaage(props) {
         });
 
         const buscaEventos = await api.get(eventsResource);
-        setEventos(buscaEventos.data); //aqui retorna um array, então de boa!
+        setEventos(buscaEventos.data);
       } else {
         setNotifyUser({
           titleNote: "Erro",
@@ -136,15 +135,11 @@ export default function EventosPaage(props) {
     setShowSpinner(false);
     setFrmEditData({});
     setFrmEdit(false);
-    return; // aqui como um preventDefault()
+    return;
   }
 
   // DELETE
   async function handleDelete(idElemento) {
-    if (!window.confirm("Confirma Exclusão?")) {
-      return; //retorna a função sem executar o restante do código
-    }
-
     setShowSpinner(true);
     try {
       const promise = await api.delete(`${eventsResource}/${idElemento}`);
@@ -160,8 +155,8 @@ export default function EventosPaage(props) {
         });
 
         const buscaEventos = await api.get(eventsResource);
-        // console.log(buscaEventos.data);
-        setEventos(buscaEventos.data); //aqui retorna um array, então de boa!
+
+        setEventos(buscaEventos.data);
       } else {
         setNotifyUser({
           titleNote: "Erro",
@@ -259,6 +254,7 @@ export default function EventosPaage(props) {
    * @param {[{}]} arrEvents
    * @returns array
    */
+
   function fromToEventType(arrEvents) {
     // console.log(arrEvents);
     if (arrEvents.length === 0) return [];
@@ -272,9 +268,26 @@ export default function EventosPaage(props) {
     return arrAux;
   }
 
-  // THE COMPONENT
+  const [windowSize, setWindowSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
+  useEffect(() => {
+
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    window.addEventListener('resize', handleResize)
+  }, [])
+
   return (
     <>
+      
       <MainContent>
         <section className="cadastro-evento-section">
           <Container>
@@ -450,6 +463,8 @@ export default function EventosPaage(props) {
               dados={eventos}
               fnDelete={handleDelete}
               fnUpdate={showUpdateForm}
+              setShowModal={setShowModal}
+              setIdToBeDeleted={setIdToBeDeleted}
             />
           </Container>
         </section>
@@ -460,6 +475,20 @@ export default function EventosPaage(props) {
 
       {/* CARD NOTIFICATION */}
       {<Notification {...notifyUser} setNotifyUser={setNotifyUser} />}
+
+      {
+        showModal ?
+          (
+            <ConfirmationModal
+              txt={"Deseja confirmar a exclusão do evento?"}
+              page={"adm-event"}
+              setShowModal={setShowModal}
+              idToBeDeleted={idToBeDeleted}
+              fnDelete={handleDelete}
+            />
+          ) :
+          null
+      }
     </>
   );
 }

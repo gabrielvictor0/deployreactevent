@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./HomePage.css";
 
 import Banner from "../../components/Banner/Banner";
@@ -12,21 +12,27 @@ import api, { pastEventsResource } from "../../Services/Service";
 import Notification from "../../components/Notification/Notification";
 import { nextEventResource } from "../../Services/Service";
 import PastEvents from "../../components/PastEvents/PastEvents";
+import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationModal";
+import { UserContext } from "../../context/AuthContext";
 
 const HomePage = () => {
   const [nextEvents, setNextEvents] = useState([]);
   const [pastEvents, setPastEvents] = useState([]);
 
-  const [notifyUser, setNotifyUser] = useState(); //Componente Notification
+  const [notifyUser, setNotifyUser] = useState();
+  const [showModal, setShowModal] = useState(false);
+  const [idEventConf, setIdEventConf] = useState(null)
+  const [confirm, setConfirm] = useState(false)
 
-  // roda somente na inicialização do componente
+  const { userData } = useContext(UserContext)
+
   useEffect(() => {
     async function getNextEvents() {
       try {
         const promise = await api.get(nextEventResource);
         const dados = await promise.data;
-        // console.log(dados);
-        setNextEvents(dados); //atualiza o state
+        setNextEvents(dados);
+
       } catch (error) {
         console.log("não trouxe os próximos eventos, verifique lá!");
         // setNotifyUser({
@@ -52,37 +58,64 @@ const HomePage = () => {
 
     getPastEvents();
     getNextEvents(); //chama a função
-  }, []);
+
+    console.log("effect userdata");
+
+  }, [userData]);
 
   return (
     <MainContent>
       {<Notification {...notifyUser} setNotifyUser={setNotifyUser} />}
       <Banner />
 
-      {/* PRÓXIMOS EVENTOS */}
       <section className="proximos-eventos">
         <Container>
           <Title titleText={"Próximos Eventos"} />
 
+
+
           <div className="events-box">
-            {nextEvents.map((e) => {
-              return (
-                <NextEvent
-                  key={e.idEvento}
-                  title={e.nomeEvento}
-                  description={e.descricao}
-                  eventDate={e.dataEvento}
-                  idEvent={e.idEvento}
-                />
-              );
-            })}
+            {
+              nextEvents.length > 0 ?
+                (
+                  nextEvents.map((e) => {
+                    return (
+                      <NextEvent
+                        key={e.idEvento}
+                        title={e.nomeEvento}
+                        description={e.descricao}
+                        eventDate={e.dataEvento}
+                        idEvent={e.idEvento}
+                        setShowModal={setShowModal}
+                        setIdEventConf={setIdEventConf}
+                        setNotifyUser={setNotifyUser}
+                        confirm={confirm}
+                      />
+                    );
+                  })
+                )
+                :
+                (
+                  <div style={{ width: '100vw', display: 'flex', justifyContent: 'center' }}>
+                    <p>Nenhum evento próximo</p>
+                  </div>
+                )
+            }
           </div>
+
+
         </Container>
       </section>
 
+
+
+
       <section className="proximos-eventos">
         <Container>
-          <Title titleText={"Eventos Anteriores"} />
+          <Title
+            titleText={"Eventos Anteriores"}
+            additionalClass="title-past-event"
+          />
           <div className="events-box">
             {pastEvents.map((e) => {
               return (
@@ -93,7 +126,6 @@ const HomePage = () => {
                   eventDate={e.dataEvento}
                   idEvent={e.idEvento}
                   buttonLink={`/detalhes-evento/${e.idEvento}`}
-                  buttonText={"Visualizar"}
                 />
               );
             })}
@@ -103,6 +135,21 @@ const HomePage = () => {
 
       <VisionSection />
       <ContactSection />
+
+      {
+        showModal ?
+          (
+            <ConfirmationModal
+              setNotifyUser={setNotifyUser}
+              setShowModal={setShowModal}
+              idEvent={idEventConf}
+              setConfirm={setConfirm}
+              page={"home"}
+              txt={"Deseja confirmar sua presença no evento?"}
+            />
+          )
+          : null
+      }
     </MainContent>
   );
 };

@@ -4,7 +4,7 @@ import "./TableTp.css";
 import editPen from "../../../assets/images/edit-pen.svg";
 import trashDelete from "../../../assets/images/trash-delete.svg";
 
-const TableTp = ({ dados, fnDelete = null, fnUpdate = null }) => {
+const TableTp = ({ dados, fnDelete = null, fnUpdate = null, setShowModal, setIdToBeDeleted }) => {
   return (
     <table className="table-data">
       {/* cabeçalho */}
@@ -49,8 +49,9 @@ const TableTp = ({ dados, fnDelete = null, fnUpdate = null }) => {
                   className="table-data__icon" 
                   src={trashDelete} alt="" 
                   onClick={(e) => {
-                    fnDelete(tp.idTipoEvento)
+                      setShowModal(true); setIdToBeDeleted(tp.idTipoEvento)
                   }}  
+                  // fnDelete(tp.idTipoEvento)
                 />
               </td>
             </tr>

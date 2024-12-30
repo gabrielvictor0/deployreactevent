@@ -29,35 +29,31 @@ const Nav = ({ exibeNavbar, setExibeNavbar }) => {
       </Link>
 
       <div className="navbar__items-box">
-        <Link to="/" className="navbar__item" onClick={() => {
-          setExibeNavbar(false);
-        }}>
+        <Link to="/" className="navbar__item" onClick={() => { setExibeNavbar(false); }}>
           Home
         </Link>
 
-        {userData.nome && userData.role === "Administrador" ? (
-          <>
-            <Link className="navbar__item" to="/tipo-eventos" onClick={() => {
-          setExibeNavbar(false);
-        }}>
-              Tipos Evento
-            </Link>
-            <Link className="navbar__item" to="/eventos" onClick={() => {
-          setExibeNavbar(false);
-        }}>
-              Eventos
-            </Link>
-          </>
-        ) : userData.nome && userData.role === "Comum" ? (
-          <Link className="navbar__item" to="/eventos-aluno">
-            Eventos
-          </Link>
-        ) : null}
+        {userData.nome && userData.role === "Administrador" ?
+          (
+            <>
+              <Link className="navbar__item" to="/tipo-eventos" onClick={() => { setExibeNavbar(false); }}>
+                Tipos Evento
+              </Link>
 
-        {/* <Link  className='navbar__item' to="/login">Login</Link> */}
-        {/* <Link className="navbar__item" to="/testes">
-          Testes
-        </Link> */}
+              <Link className="navbar__item" to="/eventos" onClick={() => { setExibeNavbar(false); }}>
+                Eventos
+              </Link>
+            </>
+          )
+          : userData.nome && userData.role === "Comum" ?
+            (
+              <Link className="navbar__item" to="/eventos-aluno" onClick={() => { setExibeNavbar(false);}}>
+                Eventos
+              </Link>
+            )
+            : null
+        }
+
       </div>
     </nav>
   );
