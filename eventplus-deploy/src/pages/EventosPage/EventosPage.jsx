@@ -148,7 +148,7 @@ export default function EventosPaage(props) {
         setNotifyUser({
           titleNote: "Sucesso!",
           textNote: "Evento excluído com sucesso!",
-          imgIcon: "danger",
+          imgIcon: "success",
           imgAlt:
             "Imagem de ilustração de sucesso. Moça segurando um balão com símbolo de confirmação ok.",
           showMessage: true,

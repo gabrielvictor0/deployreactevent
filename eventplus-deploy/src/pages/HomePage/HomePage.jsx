@@ -35,14 +35,6 @@ const HomePage = () => {
 
       } catch (error) {
         console.log("não trouxe os próximos eventos, verifique lá!");
-        // setNotifyUser({
-        //   titleNote: "Erro",
-        //   textNote: `Não foi possível carregar os próximos eventos. Verifique a sua conexão com a internet`,
-        //   imgIcon: "danger",
-        //   imgAlt:
-        //   "Imagem de ilustração de erro. Rapaz segurando um balão com símbolo x.",
-        //   showMessage: true,
-        // });
       }
     }
 

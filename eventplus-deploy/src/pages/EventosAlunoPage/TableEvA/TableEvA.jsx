@@ -9,7 +9,7 @@ import "react-tooltip/dist/react-tooltip.css";
 // import trashDelete from "../../../assets/images/trash-delete.svg";
 import "./TableEvA.css";
 
-const Table = ({ dados, fnConnect = null, fnShowModal = null }) => {
+const Table = ({ dados, fnConnect = null, fnShowModal = null, setNotifyUser }) => {
   return (
     <table className="tbal-data">
       <thead className="tbal-data__head">
@@ -38,31 +38,40 @@ const Table = ({ dados, fnConnect = null, fnShowModal = null }) => {
               </td>
 
               <td className="tbal-data__data tbal-data__data--big tbal-data__btn-actions">
-                
-                {new Date(e.dataEvento) < Date.now() ? (
-                  <img
+
+                {new Date(e.dataEvento) < Date.now() ?
+                  (<img
                     className="tbal-data__icon"
                     src={comentaryIcon}
                     alt=""
                     onClick={() => {
                       fnShowModal(e.idEvento);
                     }}
-                  />
-                ) : null}
+                  />)
+                  : null
+                }
+
                 <ToggleSwitch
                   toggleActive={e.situacao}
                   manipulationFunction={
                     new Date(e.dataEvento) > Date.now()
                       ? () => {
-                          fnConnect(
-                            e.idEvento,
-                            e.situacao ? "unconnect" : "connect",
-                            e.idPresencaEvento //parâmetro opcional
-                          );
-                        }
+                        fnConnect(
+                          e.idEvento,
+                          e.situacao ? "unconnect" : "connect",
+                          e.idPresencaEvento
+                        );
+                      }
                       : () => {
-                          alert("Evento não está mais disponível");
-                        }
+                        setNotifyUser({
+                          titleNote: "Aviso",
+                          textNote: `Não é possível confirmar presença em um evento passado!`,
+                          imgIcon: "warning",
+                          imgAlt:
+                          "Imagem de ilustração de erro. Rapaz segurando um balão com símbolo x.",
+                          showMessage: true,
+                        });
+                      }
                   }
                 />
               </td>

@@ -19,12 +19,12 @@ const Table = ({ dados, fnDelete = null, fnUpdate = null, setShowModal, setIdToB
             data-tooltip-content={"Evento"}
             data-tooltip-place="top"
           >
-            {
+            {/* {
               window.innerWidth < 992 ?
                 'Ev...'
                 : 'Evento'
-            }
-
+            } */}
+            Evento
           </th>
           <th
             className="table-data__head-title table-data__head-title--big"
@@ -35,10 +35,10 @@ const Table = ({ dados, fnDelete = null, fnUpdate = null, setShowModal, setIdToB
 
             {
               window.innerWidth < 992 ?
-                'De..'
+                'Des..'
                 : 'Descrição'
             }
-
+            {/* Descrição */}
           </th>
           <th
             className="table-data__head-title table-data__head-title--big"
@@ -51,6 +51,8 @@ const Table = ({ dados, fnDelete = null, fnUpdate = null, setShowModal, setIdToB
                 ? 'Ti...'
                 : 'Tipo Evento'
             }
+
+            {/* Tipo Evento */}
           </th>
           <th
             className="table-data__head-title table-data__head-title--big"
@@ -71,6 +73,7 @@ const Table = ({ dados, fnDelete = null, fnUpdate = null, setShowModal, setIdToB
                 ? 'E...'
                 : 'Editar'
             }
+            {/* Editar */}
           </th>
           <th
             className="table-data__head-title table-data__head-title--little"
@@ -83,6 +86,7 @@ const Table = ({ dados, fnDelete = null, fnUpdate = null, setShowModal, setIdToB
                 ? 'D...'
                 : 'Deletar'
             }
+            {/* Deletar */}
           </th>
         </tr>
       </thead>
@@ -118,6 +122,8 @@ const Table = ({ dados, fnDelete = null, fnUpdate = null, setShowModal, setIdToB
                       {tp.nomeEvento}
                     </>
                 }
+
+                {/* {tp.nomeEvento} */}
                 <Tooltip
                   id="description-tooltip"
                   className="custom-tootip"
@@ -148,7 +154,7 @@ const Table = ({ dados, fnDelete = null, fnUpdate = null, setShowModal, setIdToB
                     </>
                     : <>{tp.descricao}</>
                 }
-
+                {/* {tp.descricao} */}
 
                 <Tooltip
                   id="description-tooltip"
@@ -185,7 +191,7 @@ const Table = ({ dados, fnDelete = null, fnUpdate = null, setShowModal, setIdToB
                     </>
                 }
 
-
+                {/* {tp.tiposEvento.titulo} */}
               </td>
 
               <td
@@ -217,6 +223,8 @@ const Table = ({ dados, fnDelete = null, fnUpdate = null, setShowModal, setIdToB
                       {dateFormateDbToView(tp.dataEvento)}
                     </>
                 }
+
+                {/* {dateFormateDbToView(tp.dataEvento)} */}
               </td>
 
               <td className="table-data__data table-data__data--little">

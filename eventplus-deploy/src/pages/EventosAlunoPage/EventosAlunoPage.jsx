@@ -16,13 +16,13 @@ import api, {
 
 import "./EventosAlunoPage.css";
 import { UserContext } from "../../context/AuthContext";
+import Notification from "../../components/Notification/Notification";
 
 const EventosAlunoPage = () => {
-  // state do menu mobile
+  
 
   const [eventos, setEventos] = useState([]);
-  // select mocado
-  // const [quaisEventos, setQuaisEventos] = useState([
+  
   const quaisEventos = [
     { value: 1, text: "Todos os eventos" },
     { value: 2, text: "Meus eventos" },
@@ -38,15 +38,17 @@ const EventosAlunoPage = () => {
   const [idEvento, setIdEvento] = useState("");
   const [idComentario, setIdComentario] = useState(null);
 
+  const [notifyUser, setNotifyUser] = useState({})
+
   useEffect(() => {
     loadEventsType();
   }, [tipoEvento, userData.userId]); //
 
   async function loadEventsType() {
     setShowSpinner(true);
-    // setEventos([]); //zera o array de eventos
+
     if (tipoEvento === "1") {
-      //todos os eventos (Evento)
+
       try {
         const todosEventos = await api.get(eventsResource);
         const meusEventos = await api.get(
@@ -59,36 +61,19 @@ const EventosAlunoPage = () => {
         );
 
         setEventos(eventosMarcados);
-
-        // console.clear();
-
-        // console.log("TODOS OS EVENTOS");
-        // console.log(todosEventos.data);
-
-        // console.log("MEUS EVENTOS");
-        // console.log(meusEventos.data);
-
-        // console.log("EVENTOS MARCADOSSSS:");
-        // console.log(eventosMarcados);
       } catch (error) {
-        //colocar o notification
+
         console.log("Erro na API");
         console.log(error);
       }
     } else if (tipoEvento === "2") {
-      /**
-       * Lista os meus eventos (PresencasEventos)
-       * retorna um formato diferente de array
-       */
+
       try {
         const retornoEventos = await api.get(
           `${myEventsResource}/${userData.userId}`
         );
-        // console.clear();
-        // console.log("MINHAS PRESENÇAS");
-        // console.log(retornoEventos.data);
 
-        const arrEventos = []; //array vazio
+        const arrEventos = [];
 
         retornoEventos.data.forEach((e) => {
           arrEventos.push({
@@ -98,10 +83,9 @@ const EventosAlunoPage = () => {
           });
         });
 
-        // console.log(arrEventos);
         setEventos(arrEventos);
       } catch (error) {
-        //colocar o notification
+
         console.log("Erro na API");
         console.log(error);
       }
@@ -112,41 +96,31 @@ const EventosAlunoPage = () => {
   }
   const verificaPresenca = (arrAllEvents, eventsUser) => {
     for (let x = 0; x < arrAllEvents.length; x++) {
-      //para cada evento principal
+
       for (let i = 0; i < eventsUser.length; i++) {
-        //procurar a correspondência em minhas presenças
+
         if (arrAllEvents[x].idEvento === eventsUser[i].evento.idEvento) {
           arrAllEvents[x].situacao = true;
           arrAllEvents[x].idPresencaEvento = eventsUser[i].idPresencaEvento;
-          break; //paro de procurar para o evento principal atual
+          break;
         }
       }
     }
-
-    //retorna todos os eventos marcados com a presença do usuário
     return arrAllEvents;
   };
 
-  // toggle meus eventos ou todos os eventos
+
   function myEvents(tpEvent) {
     setTipoEvento(tpEvent);
   }
 
   const showHideModal = (idEvent) => {
-    // console.clear();
-    // console.log("id do evento atual");
-    // console.log(idEvent);
-
     setShowModal(showModal ? false : true);
-    // setUserData({ ...userData, idEvento: idEvent });
     setIdEvento(idEvent);
   };
 
   const loadMyCommentary = async (idUsuario, idEvento) => {
-    // console.log("fui chamado");
-
     try {
-      // api está retornando sempre todos os comentários do usuário
       const promise = await api.get(
         `${commentaryEventResource}?idUsuario=${idUsuario}&idEvento=${idEvento}`
       );
@@ -163,7 +137,6 @@ const EventosAlunoPage = () => {
     }
   };
 
-  // cadastrar um comentário = post
   const postMyCommentary = async (descricao, idUsuario, idEvento) => {
     try {
       const promise = await api.post(commentaryEventResourceIA, {
@@ -181,10 +154,7 @@ const EventosAlunoPage = () => {
     }
   };
 
-  // remove o comentário - delete
   const commentaryRemove = async (idComentario) => {
-    // alert("Remover o comentário " + idComentario);
-
     try {
       const promise = await api.delete(
         `${commentaryEventResource}/${idComentario}`
@@ -201,7 +171,7 @@ const EventosAlunoPage = () => {
   async function handleConnect(eventId, whatTheFunction, presencaId = null) {
     if (whatTheFunction === "connect") {
       try {
-        //connect
+
         const promise = await api.post(presencesEventResource, {
           situacao: true,
           idUsuario: userData.userId,
@@ -210,20 +180,35 @@ const EventosAlunoPage = () => {
 
         if (promise.status === 201) {
           loadEventsType();
-       
+
+          setNotifyUser({
+            titleNote: "Sucesso!",
+            textNote: `Presença confirmada com sucesso!`,
+            imgIcon: "success",
+            imgAlt:
+            "Imagem de ilustração de sucesso. Moça segurando um balão com símbolo de confirmação ok.",
+            showMessage: true,
+          });
         }
-      } catch (error) {}
+      } catch (error) { }
       return;
     }
 
-    // unconnect - aqui seria o else
     try {
       const unconnected = await api.delete(
         `${presencesEventResource}/${presencaId}`
       );
       if (unconnected.status === 204) {
         loadEventsType();
-        
+        setNotifyUser({
+          titleNote: "Sucesso!",
+          textNote: `Presença cancelada com sucesso!`,
+          imgIcon: "success",
+          imgAlt:
+          "Imagem de ilustração de sucesso. Moça segurando um balão com símbolo de confirmação ok.",
+          showMessage: true,
+        });
+
       }
     } catch (error) {
       console.log("Erro ao desconecar o usuário do evento");
@@ -250,15 +235,17 @@ const EventosAlunoPage = () => {
             dados={eventos}
             fnConnect={handleConnect}
             fnShowModal={showHideModal}
+            setNotifyUser={setNotifyUser}
           />
         </Container>
       </MainContent>
-      {/* SPINNER -Feito com position */}
+
+      {<Notification {...notifyUser} setNotifyUser={setNotifyUser} />}
+
       {showSpinner ? <Spinner /> : null}
 
-      {showModal ? (
-        <Modal
-          // userId={userData.userId}
+      {showModal ?
+        (<Modal
           showHideModal={showHideModal}
           fnGet={loadMyCommentary}
           fnPost={postMyCommentary}
@@ -267,8 +254,9 @@ const EventosAlunoPage = () => {
           userId={userData.userId}
           idEvento={idEvento}
           idComentario={idComentario}
-        />
-      ) : null}
+        />)
+        : null
+      }
     </>
   );
 };

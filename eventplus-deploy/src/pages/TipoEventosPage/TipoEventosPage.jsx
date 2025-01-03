@@ -62,24 +62,29 @@ const TipoEventosPage = () => {
     }
 
     try {
-      await api.post(eventsTypeResource, {
+      const response = await api.post(eventsTypeResource, {
         titulo: titulo,
       });
 
-      setTitulo(""); //limpa o state
-      // avisa o usuário
-      setNotifyUser({
-        titleNote: "Sucesso",
-        textNote: `O título deve ter pelo menos 3 caractere`,
-        imgIcon: "success",
-        imgAlt:
-          "Imagem de ilustração de sucesso. Moça segurando um balão com símbolo de confirmação ok.",
-        showMessage: true,
-      });
+      
+      
+      if(response.status === 201)
+      {
+        setTitulo("");
 
-      // Atualiza a tela
+        setNotifyUser({
+          titleNote: "Sucesso!",
+          textNote: `Tipo de evento cadastrado com sucesso!`,
+          imgIcon: "success",
+          imgAlt:
+            "Imagem de ilustração de sucesso. Moça segurando um balão com símbolo de confirmação ok.",
+          showMessage: true,
+        });
+      }
+      
       const buscaEventos = await api.get(eventsTypeResource);
-      setTipoEventos(buscaEventos.data); //aqui retorna um array, então de boa!
+      setTipoEventos(buscaEventos.data); 
+
     } catch (error) {
       setNotifyUser({
         titleNote: "Erro",
@@ -94,11 +99,9 @@ const TipoEventosPage = () => {
     setShowSpinner(false);
   }
 
-  /********************* EDITAR CADASTRO *********************/
-  // mostra o formulário de edição
   async function showUpdateForm(idElement) {
     setFrmEdit(true);
-    setIdEvento(idElement); // preenche o id do evento para poder atualizar
+    setIdEvento(idElement);
     setShowSpinner(true);
     try {
       const retorno = await api.get(`${eventsTypeResource}/${idElement}`);
@@ -107,23 +110,21 @@ const TipoEventosPage = () => {
     } catch (error) { }
     setShowSpinner(false);
   }
-  // cancela a tela/ação de edição (volta para o form de cadastro)
+  
   function editActionAbort() {
     setFrmEdit(false);
-    setTitulo(""); //reseta as variáveis
-    setIdEvento(null); //reseta as variáveis
+    setTitulo(""); 
+    setIdEvento(null);
   }
-  // cadastrar a atualização na api
+
   async function handleUpdate(e) {
-    e.preventDefault(); //para o evento de submit
+    e.preventDefault(); 
     setShowSpinner(true);
 
     try {
-      // atualiar na api
-
       const retorno = await api.put(eventsTypeResource + "/" + idEvento, {
         titulo: titulo
-      }); //o id está no state
+      }); 
 
 
       if (retorno.status === 204) {
@@ -136,15 +137,12 @@ const TipoEventosPage = () => {
           showMessage: true,
         });
 
-        // atualizar os dados na tela
         const retorno = await api.get(eventsTypeResource);
         setTipoEventos(retorno.data);
 
-        // volta para a tela de cadastro
         editActionAbort();
       }
     } catch (error) {
-      //  notificar o erro ao usuário
       setNotifyUser({
         titleNote: "Erro",
         textNote: `Erro na operação. Por favor verifique a conexão!`,
@@ -166,7 +164,7 @@ const TipoEventosPage = () => {
       if (promise.status === 204) {
         setNotifyUser({
           titleNote: "Sucesso",
-          textNote: `Cadastro apagado com sucesso!`,
+          textNote: `Cadastro excluído com sucesso!`,
           imgIcon: "success",
           imgAlt:
             "Imagem de ilustração de sucesso. Moça segurando um balão com símbolo de confirmação ok.",
@@ -180,8 +178,8 @@ const TipoEventosPage = () => {
       alert("Problemas ao apagar o elemento!");
     }
     setShowSpinner(false);
-
   }
+
   return (
     <>
       {<Notification {...notifyUser} setNotifyUser={setNotifyUser} />}
