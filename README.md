@@ -8,3 +8,6 @@
 [![IMAGE ALT TEXT HERE](https://github.com/gabrielvictor0/imagens_readme/blob/main/home-vercel.png)](https://www.youtube.com/watch?v=cDpiU1nPA_c)
 
 ## Deploy Azure 
+Durante o projeto realizei o deploy da API e do banco de dados na Azure.
+
+
