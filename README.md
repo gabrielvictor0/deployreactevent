@@ -15,7 +15,7 @@
 * Entity Framework
 * Azure 
 
-# Repository Pattern
+# Design Pattern
 Para a construção da API, foi definido como arquitetura o Repository Pattern. Este design pattern permite que a lógica de acesso a dados e a lógica de negócio sejam separadas. 
 
 ## YouTube Overview
