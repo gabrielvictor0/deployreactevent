@@ -5,7 +5,7 @@
 
 
 ## Event+ 
-<p> O Event+ é um sistema de gerenciamento de eventos da escola Senai Paulo Antonio Skaf. Ele foi desenvolvido com o intuito de facilitar a divulgação e melhorar a experiência dos alunos e organizadores. </p>
+<p> O Event+ é um sistema de gerenciamento de eventos da escola Senai Paulo Antonio Skaf. Ele foi desenvolvido com o intuito de facilitar a divulgação dos eventos e melhorar a experiência dos alunos e organizadores. </p>
 
 ## Tecnologias 
 * React 
@@ -27,7 +27,6 @@ Para a construção da API, foi definido como arquitetura o Repository Pattern. 
 ## YouTube Overview
 [![IMAGE ALT TEXT HERE](https://github.com/gabrielvictor0/imagens_readme/blob/main/home-vercel.png)](https://www.youtube.com/watch?v=cDpiU1nPA_c)
 
-## Deploy 
-Realizei o deploy da API e do banco de dados no serviços da Azure. 
+
 
 
