@@ -15,10 +15,10 @@
 * Azure
 * Sql Server
 
-### Arquitetura Local
+## Arquitetura Local
 <img src="https://github.com/gabrielvictor0/imagens_readme/blob/main/event_arquitetura_local.png" />
 
-### Arquitetura Cloud
+## Arquitetura Cloud
 <img src="https://github.com/gabrielvictor0/imagens_readme/blob/main/event_arquitetura_cloud.png" />
 
 #### ASP.NET
