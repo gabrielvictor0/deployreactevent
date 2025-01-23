@@ -22,7 +22,7 @@ Para a construção da API, foi definido como arquitetura o Repository Pattern. 
 <img src="https://github.com/gabrielvictor0/imagens_readme/blob/main/event_arquitetura_local.png" />
 
 #### ASP.NET
-Asp.Net é uma ferramenta que disponibiliza diversos recursos para construção de sistemas web. No caso deste projeto, esse recurso foi utilizado para o desenvolvimento da API Web.
+Essa ferramenta me forneceu suporte para desenvolver a Web API do projeto. Desta forma, o teste da API e sua documentação foram facilmente acessada através da interface web.
 
 #### ORM Entity Framework 
 O EF é um mapeador de relação de objeto utilizado para criar camadas de acesso a dados. Essa ferramenta foi muito útil para o projeto porque permitiu que a etapa de desenvolvimento do banco de dados fosse substituída pelo método Code First, que é a migração do esquema do banco de dados a partir da definição de classes.
